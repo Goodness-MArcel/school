@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "school mangement system ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest "
+  },
+  "author": "gudnex",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csrf": "^3.1.0",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "pg": "^8.16.3"
+  }
+}
