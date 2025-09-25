@@ -1,0 +1,93 @@
+:root{
+  --primarycolor1 : #c4aaff;
+  --primarycolor2 : #8855ff;
+  --primarycolor3 : #4d00ff;
+  --primarycolor3 : #3c00c6;
+  --primarycolor5 : #2a008c;
+
+  --red:#fb3748;
+  --darkred: #d00416;
+
+  --green: #84ebb4;
+  --darkgreen: #1fc16b;
+  --bg1: #ecedfb;
+  --bg2: #cdd0fa;
+  --bg3: #7f86f2;
+}
+
+
+.main-con {
+    /* border: thick double var(--primarycolor3); */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+        to right, 
+        var(--bg1) 60%,
+        var(--bg3) 40%
+
+    );
+}
+
+
+.role-container{
+    width: 50%;
+    margin: auto;
+}
+.custom-radio {
+  display: block;
+  width: 100px;
+  height: 100px;
+  padding: 10px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 10px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: capitalize;
+  background-color: white;
+  display: flex;
+    flex-direction: column;
+    gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.custom-radio p {
+    margin: 0;
+    padding: 0;
+    /* font-size: 14px;
+    font-weight: 600;
+    color: var(--primarycolor3); */
+}
+
+/* works now because .custom-radio is sibling of input */
+input[type="radio"]:checked + .custom-radio {
+  background-color: var(--bg2);
+  /* border-color:var(--bg3); */
+  color: var(--primarycolor2);
+  border: 2px solid var(--primarycolor2);
+}
+.createAccBtn{
+    background-color: var(--primarycolor3) !important;
+    color: white;
+}
+@media screen and  (max-width: 768px) {
+    body{
+        font-size: 12px !important;
+    }
+    .main-con{
+        background:linear-gradient(
+            var(--bg1) 100%
+        );
+        height: auto;
+    }
+    .custom-radio{
+        width: 150px;
+        height: 150px;
+    }
+    /* .role-container{
+        width: 90%;
+        gap: 1px !important;
+    } */
+}
