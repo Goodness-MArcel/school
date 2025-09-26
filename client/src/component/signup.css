@@ -48,20 +48,30 @@
   text-transform: capitalize;
   background-color: white;
   display: flex;
-    flex-direction: column;
-    gap: 10px;
+flex-direction: column;
+  gap: 10px;
   justify-content: center;
   align-items: center;
 }
 .custom-radio p {
     margin: 0;
     padding: 0;
-    /* font-size: 14px;
-    font-weight: 600;
-    color: var(--primarycolor3); */
+}
+::placeholder{
+    font-size: 12px;
+}
+input{
+    background: transparent !important;
+    font-size: 14px !important;
+}
+input:focus{
+    box-shadow: var(--primarycolor2) !important;
+    border: 2px solid var(--primarycolor2) !important;
+}
+.input-group{
+    background: transparent !important;
 }
 
-/* works now because .custom-radio is sibling of input */
 input[type="radio"]:checked + .custom-radio {
   background-color: var(--bg2);
   /* border-color:var(--bg3); */
@@ -72,6 +82,15 @@ input[type="radio"]:checked + .custom-radio {
     background-color: var(--primarycolor3) !important;
     color: white;
 }
+.btn-warning{
+    background-color: var(--primarycolor2) !important;
+    color: white !important;
+    border: none !important;
+}
+.error{
+    border: thin solid var(--red) !important;
+    color: var(--darkred) !important;
+}
 @media screen and  (max-width: 768px) {
     body{
         font-size: 12px !important;
@@ -80,14 +99,31 @@ input[type="radio"]:checked + .custom-radio {
         background:linear-gradient(
             var(--bg1) 100%
         );
-        height: auto;
+        height: 100vh;
     }
     .custom-radio{
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
+        padding: 10px 15px;
+        box-sizing: border-box;
     }
-    /* .role-container{
-        width: 90%;
-        gap: 1px !important;
-    } */
+    .role-container{
+        /* width: 90%; */
+        /* gap: 1px !important; */
+        box-sizing: border-box;
+        /* border: 2px solid red; */
+    }
+    .createAccBtn{
+        width: 100% !important;
+    }
+    .text-sm-center{
+        text-align: center !important;
+    }
+}
+
+@media screen and (min-width: 769px){
+   .error{
+    width: 50% !important;
+   }
+    
 }
