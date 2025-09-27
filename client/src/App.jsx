@@ -1,5 +1,7 @@
 import React,{useState , useEffect} from "react";
 import Signup from "./component/Signup";
+import Login from "./component/Login";
+import RegisterSchool from "./component/RegisterSchool";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -13,11 +15,7 @@ function App() {
   // },[])
   return (
     <div className="App">
-      <Signup />
-      {/* {text.map((user, index) => (
-  <div key={index}>{user.name}</div>
-))} */}
-
+      <Login />
     </div>
   );
 }

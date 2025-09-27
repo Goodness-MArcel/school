@@ -125,5 +125,8 @@ input[type="radio"]:checked + .custom-radio {
    .error{
     width: 50% !important;
    }
+   .text-sm-center{
+    text-align: left !important;
+   }
     
 }
