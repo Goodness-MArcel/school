@@ -14,7 +14,17 @@
   --bg2: #cdd0fa;
   --bg3: #7f86f2;
 }
-
+.alert-success{
+    position: absolute;
+    top: 5px;
+    left: 25%;
+    width: 40%;
+    background-color: var(--green) !important;
+    border: none;
+    text-align: center;
+    font-weight: 700;
+    /* padding: 0; */
+}
 .main-container {
     height: 100vh;
     background-color: var(--bg1);
@@ -97,5 +107,10 @@
 @media screen and (max-width: 900px) {
     .main-container{
         height: auto;
+    }
+     .alert-success{
+        width: 90%;
+        left: 20px;
+        /* margin: auto; */
     }
 }

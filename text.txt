@@ -1,0 +1,33 @@
+1. Signup
+
+User signs up with Supabase → gets a user.id.
+
+Backend stores user in your users table.
+
+At this point, the user does not yet have a school.
+
+2. Register School
+
+After signup, user goes to the RegisterSchool page.
+
+You send user.id + school details to backend → insert into schools table with user_id as foreign key.
+
+Backend responds with the school object.
+
+In frontend, you store both user + school in Context.
+
+3. Login
+
+On login, Supabase gives you the user.id.
+
+You fetch both the user record and the school record from your backend.
+
+Store them in Context so the whole app can use them (e.g., dashboard, classes, teachers).
+
+4. Dashboard
+
+Context provides user + school.
+
+Pages like Students, Teachers, Classes query the backend filtered by school_id.
+
+Example: GET /api/students?school_id={school.id}

@@ -30,10 +30,30 @@
     background-color: var(--primarycolor3) !important;
     color: white !important;
 }
+.message-alert{
+    position: absolute;
+    top: 5px;
+    left: 25%;
+    width: 40%;
+    /* background-color: var(--green) !important; */
+    border: none;
+    text-align: center;
+    font-weight: 700;
+}
+.alert-success{
+    background-color: var(--green) !important;
+}
+.alert-danger{
+    background-color: var(--red) !important;
+}
 @media screen and (max-width: 700px) {
     .main-container{
         background: linear-gradient(
             var(--bg1)100%
         );
+    }
+    .message-alert{
+         width: 90%;
+        left: 20px;
     }
 }

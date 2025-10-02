@@ -1,0 +1,33 @@
+:root{
+  --primarycolor1 : #c4aaff;
+  --primarycolor2 : #8855ff;
+  --primarycolor3 : #4d00ff;
+  --primarycolor3 : #3c00c6;
+  --primarycolor5 : #2a008c;
+
+  --red:#fb3748;
+  --darkred: #d00416;
+
+  --green: #84ebb4;
+  --darkgreen: #1fc16b;
+  --bg1: #ecedfb;
+  --bg2: #cdd0fa;
+  --bg3: #7f86f2;
+}
+
+.con {
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--primarycolor3); /* soft border */
+  border-radius: 12px; /* rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.2); /* transparent white overlay */
+  backdrop-filter: blur(5px); /* optional glass effect */
+}
+
+.spinner-border-app {
+  width: 3rem;
+  height: 3rem;
+}

@@ -87,6 +87,17 @@ input[type="radio"]:checked + .custom-radio {
     color: white !important;
     border: none !important;
 }
+.alert-success{
+    position: absolute;
+    top: 5px;
+    left: 25%;
+    width: 40%;
+    background-color: var(--green) !important;
+    border: none;
+    text-align: center;
+    font-weight: 700;
+    /* padding: 0; */
+}
 .error{
     border: thin solid var(--red) !important;
     color: var(--darkred) !important;
@@ -118,6 +129,11 @@ input[type="radio"]:checked + .custom-radio {
     }
     .text-sm-center{
         text-align: center !important;
+    }
+    .alert-success{
+        width: 90%;
+        left: 20px;
+        /* margin: auto; */
     }
 }
 
