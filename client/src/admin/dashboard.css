@@ -1,3 +1,4 @@
+
 :root {
   --primarycolor1: #c4aaff;
   --primarycolor2: #8855ff;
@@ -7,17 +8,17 @@
   --bg1: #f7f8fc;
   --bg2: #cdd0fa;
   --bg3: #7f86f2;
-  --red:#fb3748;
+  --red: #fb3748;
   --darkred: #d00416;
   --green: #84ebb4;
   --darkgreen: #1fc16b;
 }
 
+/* Container */
 .dashboard-container {
   display: flex;
   height: 100vh;
   overflow: hidden;
-  /* prevents double scrollbar */
 }
 
 /* Sidebar */
@@ -30,20 +31,33 @@
   top: 0;
   bottom: 0;
   left: 0;
+  transition: width 0.3s ease;
+  z-index: 1000;
 }
 
+/* Collapsed sidebar */
+.sidebar.collapsed {
+  width: 70px;
+}
+
+/* Nav items should adapt */
 .nav-item {
-  width: 80% !important;
+  width: 100% !important;
 }
 
+/* Links */
 .sidebar-link {
   color: #e6e6ff;
   padding: 10px 15px;
-  /* border-radius: 6px; */
-  width: 200px;
-  /* width: 100% !important; */
-  /* border: thin solid red; */
-  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s, color 0.3s, padding 0.3s;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed .sidebar-link span {
+  display: none;
 }
 
 .sidebar-link:hover {
@@ -52,22 +66,28 @@
   text-decoration: none;
 }
 
+/* Active link */
 .active-link {
-  color:var(--primarycolor2) !important;
+  color: var(--primarycolor2) !important;
   background: var(--bg1);
   font-weight: 600;
-  border-radius: none !important;
   padding-left: 12px;
 }
 
 /* Main content */
 .main-content {
   margin-left: 240px;
-  /* equal to sidebar width */
   display: flex;
   flex-direction: column;
   width: calc(100% - 240px);
   height: 100vh;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* When sidebar is collapsed */
+.sidebar.collapsed ~ .main-content {
+  margin-left: 70px;
+  width: calc(100% - 70px);
 }
 
 /* Header */
@@ -77,13 +97,13 @@
   background-color: var(--bg1);
 }
 
-/* Content area (scrollable) */
+/* Content area */
 .content-area {
   overflow-y: auto;
   background-color: var(--bg1);
 }
 
-/* Placeholder for skeleton view */
+/* Placeholder */
 .placeholder-box {
   height: 200px;
   border: 2px dashed #ccc;
@@ -96,10 +116,135 @@
   font-weight: 500;
 }
 
+/* Logo */
 .logo_img {
   border: thin solid white;
   height: 50px;
   width: 50px;
   border-radius: 50%;
   margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Make logo smaller when collapsed */
+.sidebar.collapsed .logo_img {
+  height: 40px;
+  width: 40px;
+}
+/* Sidebar animation for mobile */
+.sidebar {
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .sidebar.mobile-active {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+
+/* Mobile hamburger button */
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--primarycolor3);
+}
+
+/* primary functionalities ends here */
+
+/* Search Form */
+.search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.search-form input {
+  padding: 6px 10px 6px 35px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  width: 400px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  background: var(--bg1);
+  color: #333;
+}
+
+.search-form .search-icon {
+  position: absolute;
+  right: 20px;
+  color: var(--primarycolor3);
+  cursor: pointer;
+}
+
+/* Mobile behaviour */
+@media (max-width: 768px) {
+  .search-form input {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .search-form.active input {
+    width: 160px;
+    opacity: 1;
+    pointer-events: auto;
+    margin-left: 8px;
+  }
+
+  .search-form .search-icon {
+    position: static;
+    font-size: 18px;
+    margin-right: 5px;
+  }
+}
+/* Admin pic box */
+.admin_pic {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: thin solid var(--primarycolor3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.notification, .message {
+  font-size: 14px;
+  background-color: var(--bg2);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
 }
