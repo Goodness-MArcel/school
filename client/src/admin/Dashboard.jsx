@@ -1,5 +1,6 @@
-
 import React, { useState } from "react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+// import Popover from "react-bootstrap/Popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faGrip,
@@ -14,13 +15,14 @@ import {
     faEnvelope,
     faCog,
     faSignOutAlt,
-    faBell ,
+    faBell,
     faBars, // mobile toggle
     faAngleDoubleLeft // collapse/expand for desktop
 } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope as faEnvelopeRegular, faBell as faBellRegular } from "@fortawesome/free-regular-svg-icons";
 import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AdminPopover from "./component/Popover";
 import "./dashboard.css";
 
 function Dashboard() {
@@ -33,7 +35,6 @@ function Dashboard() {
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
     const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
     const closeMobileSidebar = () => setIsMobileOpen(false);
-
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
@@ -71,18 +72,6 @@ function Dashboard() {
                             >
                                 <FontAwesomeIcon icon={faGrip} className="me-3" />
                                 {!isCollapsed && "Dashboard"}
-                            </NavLink>
-                        </li>
-                        <li className="nav-item mb-1">
-                            <NavLink
-                                to="products"
-                                className={({ isActive }) =>
-                                    "nav-link sidebar-link " + (isActive ? "active-link" : "")
-                                }
-                                onClick={closeMobileSidebar}
-                            >
-                                <FontAwesomeIcon icon={faBoxOpen} className="me-3" />
-                                {!isCollapsed && "Products"}
                             </NavLink>
                         </li>
                         <li className="nav-item mb-1">
@@ -229,12 +218,10 @@ function Dashboard() {
                     </div>
 
                     <div className="admin_pic_box d-flex align-items-center gap-3">
-                        <span className="notification"><FontAwesomeIcon icon={faBellRegular}/></span>
-                        <span className="message"><FontAwesomeIcon icon={faEnvelopeRegular}/></span>
-                        <img src="" alt="" className="admin_pic" />
+                        <span className="notification"><FontAwesomeIcon icon={faBellRegular} /></span>
+                        <span className="message"><FontAwesomeIcon icon={faEnvelopeRegular} /></span>
+                        <AdminPopover user={user} />
                         <div className="admin_name d-none d-md-flex ">
-                            <p className="m-0">Admin</p>
-                            <p className="m-0">{user?.name || "Guest"}</p>
                         </div>
                     </div>
                 </div>

@@ -92,7 +92,7 @@
 
 /* Header */
 .header {
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid var(--bg2);
   flex-shrink: 0;
   background-color: var(--bg1);
 }
@@ -201,7 +201,7 @@
 .search-form .search-icon {
   position: absolute;
   right: 20px;
-  color: var(--primarycolor3);
+  color: var(--bg3);
   cursor: pointer;
 }
 

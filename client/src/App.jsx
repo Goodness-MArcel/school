@@ -11,6 +11,8 @@ const Login = lazy(() => import("./component/Login"));
 const RegisterSchool = lazy(() => import("./component/RegisterSchool"));
 
 // Dashboard subpages
+const Admin = lazy(()=>import('./admin/pages/Admin.jsx'));
+const School = lazy(()=>import("./admin/pages/SchoolProfile.jsx"))
 const DashboardHome = lazy(() => import("./admin/pages/DashboardHome.jsx"));
 const ManageClassess = lazy(() => import("./admin/pages/Product.jsx"));
 const Teachers = lazy(()=>import("./admin/pages/Teachers.jsx"));
@@ -53,6 +55,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<DashboardHome />} />
             <Route path="products" element={<ManageClassess />} />
+            <Route path="admin_profile" element={<Admin />} />
+            <Route path="school_profile" element={<School />} />
             <Route path="teachers" element={<Teachers/>}/>
             <Route path="student" element={<Student/>}/>
             <Route path="attendance" element={<Attendance/>}/>
