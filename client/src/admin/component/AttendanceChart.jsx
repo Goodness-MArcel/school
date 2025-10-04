@@ -23,8 +23,8 @@ const data = [
 function AttendanceChart() {
   return (
     <div className="rounded p-3">
-      <p className="mb-2 text-center">Weekly Attendance</p>
-      <ResponsiveContainer width="100%" height={250} style={{ fontSize: '12px' }}>
+      <p className="mb-5">Weekly Attendance</p>
+      <ResponsiveContainer width="100%" height={230} style={{ fontSize: '12px',color: 'black' }}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
           <XAxis dataKey="day" />
