@@ -108,3 +108,59 @@ This project is licensed under the MIT License.
 ## Author
 
 Goodness Marcel
+
+---
+
+## API Endpoints
+
+The backend exposes several RESTful endpoints for authentication, user management, and school operations. Example endpoints:
+
+- `POST /api/auth/register` — Register a new user
+- `POST /api/auth/login` — Login and receive a JWT
+- `GET /api/users/:id` — Get user details
+- `POST /api/school/register` — Register a new school
+- `GET /api/dashboard` — Get dashboard data
+
+Refer to the `server/routes` and `server/controller` folders for more details and custom endpoints.
+
+## Deployment
+
+To deploy the application:
+
+1. Build the frontend:
+  ```sh
+  cd client
+  npm run build
+  ```
+2. Serve the build folder using a static server or integrate with your backend.
+3. Ensure environment variables are set for production in both client and server.
+4. Use a process manager like PM2 for the Node.js backend in production.
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Commit your changes
+4. Push to your branch and open a pull request
+
+Please follow the code style and add documentation/comments where necessary.
+
+## Troubleshooting
+
+- If you encounter CORS errors, check your backend configuration.
+- Ensure Supabase credentials are correct in `.env` files.
+- For database issues, verify your Supabase setup and network connectivity.
+- Check logs in the terminal for error messages.
+
+## Acknowledgments
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [Supabase](https://supabase.com/)
+- [FontAwesome](https://fontawesome.com/)
+
+---

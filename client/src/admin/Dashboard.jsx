@@ -29,7 +29,7 @@ function Dashboard() {
     const { user } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);  // desktop collapse
     const [isMobileOpen, setIsMobileOpen] = useState(false); // mobile open/close
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);// search bar toggle
 
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);

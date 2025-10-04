@@ -105,13 +105,14 @@
 
 /* Placeholder */
 .placeholder-box {
-  height: 200px;
-  border: 2px dashed #ccc;
+  height: auto;
+  /* border: 2px dashed #ccc; */
   border-radius: 10px;
-  background: #fff;
-  display: flex;
+  /* background: #fff; */
+  padding-block: 2rem;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   color: #666;
   font-weight: 500;
 }
