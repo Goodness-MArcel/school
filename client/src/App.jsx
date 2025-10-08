@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import("./admin/Dashboard.jsx"));
 const Signup = lazy(() => import("./component/Signup"));
 const Login = lazy(() => import("./component/Login"));
 const RegisterSchool = lazy(() => import("./component/RegisterSchool"));
+const ProtectedRoute = lazy(() => import("./ProtectedRoute.jsx"));
 
 // Dashboard subpages
 const Admin = lazy(()=>import('./admin/pages/Admin.jsx'));
@@ -52,19 +53,21 @@ function App() {
           <Route path="/regschool" element={<RegisterSchool />} />
 
           {/* Dashboard with nested routes */}
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<DashboardHome />} />
-            <Route path="products" element={<ManageClassess />} />
-            <Route path="admin_profile" element={<Admin />} />
-            <Route path="school_profile" element={<School />} />
-            <Route path="teachers" element={<Teachers/>}/>
-            <Route path="student" element={<Student/>}/>
-            <Route path="attendance" element={<Attendance/>}/>
-            <Route path="time_table" element={<Timetable/>}/>
-            <Route path="report" element={<Reports/>}/>
-            <Route path="assessment" element={<Assessment/>}/>
-            <Route path="messages" element={<Messages/>}/>
-            <Route path="settings" element={<Settings />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route index element={<DashboardHome />} />
+              <Route path="admin_profile" element={<Admin />} />
+              <Route path="school_profile" element={<School />} />
+              <Route path="classes" element={<ManageClassess />} />
+              <Route path="teachers" element={<Teachers />} />
+              <Route path="student" element={<Student />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="time_table" element={<Timetable />} />
+              <Route path="report" element={<Reports />} />
+              <Route path="assessment" element={<Assessment />} />
+              <Route path="messages" element={<Messages />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
           </Route>
         </Routes>
       </Suspense>

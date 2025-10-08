@@ -30,7 +30,7 @@ function SchoolCalender() {
   };
 
   return (
-    <div>
+    <div className=" w-100">
       <Calendar
         onChange={handleDateChange}
         value={date}

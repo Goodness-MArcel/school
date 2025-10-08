@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { supabase } from "../supabaseClient.js";
 import { faUserGraduate, faChalkboardUser, faUserShield, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import axios from 'axios';
 import './signup.css';
 function Signup() {
@@ -142,6 +142,7 @@ function Signup() {
                                         </label>
                                     </div>
                                     <button className="btn btn-primary mt-4 w-100  text-capitalize createAccBtn" onClick={nextStep}>Create account</button>
+                                    <p className="mt-3">Already have an account? <Link to="/login">Login</Link></p>
                                 </div>
                                 <div className="col-md-5 left_side d-none d-md-flex justify-content-center align-items-center">
                                     <img src="../image3.svg" alt="" className="img-fluid" width={500} />

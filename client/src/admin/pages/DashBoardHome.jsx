@@ -1,12 +1,16 @@
 import React from 'react';
 import TopCard from '../component/TopCard';
+import Todo from '../component/Todo';
 import SchoolCalender from '../component/SchoolCalender';
+import NoticeBoard from '../component/NoticeBoard';
 import AttendanceChart from '../component/AttendanceChart';
 import MonthlyEarningsChart from '../component/MonthlyEarningsChar';
+
+
 function DashboardHome() {
   return <div className="placeholder-box py-4 ">
     <div className="row" >
-      <div className="col-md-8   d-flex flex-column align-items-center justify-content-center gap-3" >
+      <div className="col-md-8 d-flex flex-column align-items-center justify-content-center gap-3" >
         <div className="cardsection p-1  w-100">
           <div className="row g-3">
             <TopCard />
@@ -15,12 +19,15 @@ function DashboardHome() {
         <div className="rounded" style={{ backgroundColor: 'white', width: '100%' }}>
           <MonthlyEarningsChart />
         </div>
-        <div className="rounded" style={{ backgroundColor: 'white', width: '100%' }}>
+        <div className="rounded mb-3" style={{ backgroundColor: 'white', width: '100%' }}>
           <AttendanceChart />
         </div>
       </div>
       <div className="col-md-4">
         <SchoolCalender />
+
+        <NoticeBoard />
+        <Todo />
       </div>
     </div>
     <div className="container"></div>

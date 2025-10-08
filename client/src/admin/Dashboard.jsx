@@ -24,6 +24,7 @@ import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AdminPopover from "./component/Popover";
 import "./dashboard.css";
+import { supabase } from "../supabaseClient";
 
 function Dashboard() {
     const { user } = useAuth();
@@ -35,6 +36,11 @@ function Dashboard() {
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
     const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
     const closeMobileSidebar = () => setIsMobileOpen(false);
+    const handleLogout = async () => {
+        // Add your logout logic 
+        
+       
+    };
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
@@ -175,16 +181,13 @@ function Dashboard() {
 
                 <div className="logout-con nav mt-auto">
                     <li className="nav-item mb-2">
-                        <NavLink
-                            to="logout"
-                            className={({ isActive }) =>
-                                "nav-link sidebar-link " + (isActive ? "active-link" : "")
-                            }
-                            onClick={closeMobileSidebar}
-                        >
-                            <FontAwesomeIcon icon={faSignOutAlt} className="me-3" />
-                            {!isCollapsed && "Logout"}
-                        </NavLink>
+                       <button
+        className="nav-link sidebar-link"
+        onClick={handleLogout}
+      >
+        <FontAwesomeIcon icon={faSignOutAlt} className="me-3" />
+        {!isCollapsed && 'Logout'}
+      </button>
                     </li>
                 </div>
             </div>

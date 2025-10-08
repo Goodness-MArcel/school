@@ -1,0 +1,22 @@
+:root {
+  --primarycolor1: #c4aaff;
+  --primarycolor2: #8855ff;
+  --primarycolor3: #4d00ff;
+  --primarycolor4: #3c00c6;
+  --primarycolor5: #2a008c;
+  --bg1: #f7f8fc;
+  --bg2: #cdd0fa;
+  --bg3: #7f86f2;
+  --red: #fb3748;
+  --darkred: #d00416;
+  --green: #84ebb4;
+  --darkgreen: #1fc16b;
+}
+
+.todo-container {
+  border: 2px solid var(--primarycolor2);
+  border-radius: 10px;
+  background-color: var(--bg2);
+  padding: 16px;
+  margin-bottom: 16px;
+}

@@ -16,11 +16,12 @@
 }
 
 .react-calendar {
-  border: 2px solid var(--bg3); /* Bootstrap blue border */
+  border: 2px solid var(--primarycolor2); /* Bootstrap blue border */
   border-radius: 10px;       /* optional */
   padding: 10px;
+  width: 100% !important;
   background-color: var(--bg2);
-   font-family: 'Poppins', sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
 }
 .react-calendar__tile{
     color: black !important;

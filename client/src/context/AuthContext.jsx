@@ -4,19 +4,30 @@ import { supabase } from "../supabaseClient.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-    // Get user on initial load
-    const session = supabase.auth.getSession().then(({ data }) => {
-      setUser(data?.session?.user ?? null);
-    });
+  useEffect(() => {
+    // ✅ Load existing session on first mount
+    const loadSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-    // Listen for auth changes (login, logout, refresh)
+      setUser(session?.user ?? null);
+      setLoading(false);
+    };
+
+    loadSession();
+
+    // ✅ Listen for auth changes (login, logout, token refresh)
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
+      async (event, session) => {
+        if (event === "SIGNED_OUT") {
+          setUser(null);
+        } else if (session?.user) {
+          setUser(session.user);
+        }
       }
     );
 
@@ -26,13 +37,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
+    <AuthContext.Provider value={{ user, setUser, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
-
-  
-
-}
+};
 
 export const useAuth = () => useContext(AuthContext);
+
+
+// export const useAuth = () => useContext(AuthContext);
