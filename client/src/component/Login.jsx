@@ -104,7 +104,6 @@ function Login() {
                                         >
                                             <span className="visually-hidden">Loading...</span>
                                         </div>
-                                        loading
                                        </>
                                     ): 'login'
                                     }</button>
