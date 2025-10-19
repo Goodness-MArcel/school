@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-// import Popover from "react-bootstrap/Popover";
+import ConfirmLogoutModal from "./component/ConfirmLogoutModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faGrip,
@@ -15,32 +15,62 @@ import {
     faEnvelope,
     faCog,
     faSignOutAlt,
-    faBell,
+    faClock,
     faBars, // mobile toggle
     faAngleDoubleLeft // collapse/expand for desktop
 } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope as faEnvelopeRegular, faBell as faBellRegular } from "@fortawesome/free-regular-svg-icons";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AdminPopover from "./component/Popover";
 import "./dashboard.css";
-import { supabase } from "../supabaseClient";
+import { getSchoolProfile } from "../api/userService";
+
+
 
 function Dashboard() {
-    const { user } = useAuth();
+    const { user, setUser, logout } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);  // desktop collapse
     const [isMobileOpen, setIsMobileOpen] = useState(false); // mobile open/close
     const [isSearchOpen, setIsSearchOpen] = useState(false);// search bar toggle
+    const [schoolLogo, setSchoolLogo] = useState(null);
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    // Step 1: Show confirm modal
+    const handleLogoutClick = () => {
+        setShowConfirmModal(true);
+    };
+
+    // Step 2: Confirm logout → call context logout
+    const handleConfirmLogout = async () => {
+        setShowConfirmModal(false);
+        await logout(); // uses the AuthContext logout function
+        setShowSuccessModal(true);
+    };
+
+
 
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
     const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
     const closeMobileSidebar = () => setIsMobileOpen(false);
-    const handleLogout = async () => {
-        // Add your logout logic 
-        
-       
-    };
+
+
+    useEffect(() => {
+        async function getschoolImage() {
+            try {
+                const res = await getSchoolProfile();
+                const data = res.data[0];
+                console.log(data)
+                setSchoolLogo(data)
+            } catch (error) {
+
+            }
+        }
+        getschoolImage()
+    }, []);
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
@@ -49,7 +79,9 @@ function Dashboard() {
                 ${isMobileOpen ? "mobile-active" : ""}`}
             >
                 <div className="d-flex justify-content-between align-items-center mb-3 px-2">
-                    {!isCollapsed && <img src="" alt="logo" className="logo_img" />}
+                    {!isCollapsed && schoolLogo?.logo && (
+                        <img src={schoolLogo.logo} alt="logo" className="logo_img" />
+                    )}
 
                     {/* Collapse button (desktop only) */}
                     <FontAwesomeIcon
@@ -78,6 +110,18 @@ function Dashboard() {
                             >
                                 <FontAwesomeIcon icon={faGrip} className="me-3" />
                                 {!isCollapsed && "Dashboard"}
+                            </NavLink>
+                        </li>
+                          <li className="nav-item mb-1">
+                            <NavLink
+                                to="schoolSessions" end
+                                className={({ isActive }) =>
+                                    "nav-link sidebar-link " + (isActive ? "active-link" : "")
+                                }
+                                onClick={closeMobileSidebar}
+                            >
+                                <FontAwesomeIcon icon={faClock} className="me-3" />
+                                {!isCollapsed && "school sessions"}
                             </NavLink>
                         </li>
                         <li className="nav-item mb-1">
@@ -181,13 +225,13 @@ function Dashboard() {
 
                 <div className="logout-con nav mt-auto">
                     <li className="nav-item mb-2">
-                       <button
-        className="nav-link sidebar-link"
-        onClick={handleLogout}
-      >
-        <FontAwesomeIcon icon={faSignOutAlt} className="me-3" />
-        {!isCollapsed && 'Logout'}
-      </button>
+                        <button
+                            className="nav-link sidebar-link"
+                            onClick={handleLogoutClick}
+                        >
+                            <FontAwesomeIcon icon={faSignOutAlt} className="me-3" />
+                            {!isCollapsed && 'Logout'}
+                        </button>
                     </li>
                 </div>
             </div>
@@ -210,7 +254,7 @@ function Dashboard() {
                         <h5 className="m-0 me-3 d-none d-md-block">Welcome , Admin</h5>
 
                         {/* Search Form */}
-                        <form className={`search-form ${isSearchOpen ? "active" : ""}`} onSubmit={(e) => e.preventDefault()}>
+                        <form className={`search-form  ${isSearchOpen ? "active" : ""}`} onSubmit={(e) => e.preventDefault()}>
                             <input type="search" placeholder="Search..." />
                             <FontAwesomeIcon
                                 icon={faSearch}
@@ -235,6 +279,11 @@ function Dashboard() {
                     <Outlet />
                 </div>
             </div>
+            <ConfirmLogoutModal
+                show={showConfirmModal}
+                onConfirm={handleConfirmLogout}
+                onCancel={() => setShowConfirmModal(false)}
+            />
         </div>
     );
 }

@@ -10,19 +10,21 @@ const Signup = lazy(() => import("./component/Signup"));
 const Login = lazy(() => import("./component/Login"));
 const RegisterSchool = lazy(() => import("./component/RegisterSchool"));
 const ProtectedRoute = lazy(() => import("./ProtectedRoute.jsx"));
+const CheckUserBeforeSchoolReg = lazy(() => import('./CheckUserBeforeSchoolReg.jsx'));
 
 // Dashboard subpages
-const Admin = lazy(()=>import('./admin/pages/Admin.jsx'));
-const School = lazy(()=>import("./admin/pages/SchoolProfile.jsx"))
+const Admin = lazy(() => import('./admin/pages/Admin.jsx'));
+const School = lazy(() => import("./admin/pages/SchoolProfile.jsx"))
 const DashboardHome = lazy(() => import("./admin/pages/DashboardHome.jsx"));
-const ManageClassess = lazy(() => import("./admin/pages/Product.jsx"));
-const Teachers = lazy(()=>import("./admin/pages/Teachers.jsx"));
-const Student = lazy(()=>import("./admin/pages/Student.jsx"));
-const Attendance = lazy(()=>import("./admin/pages/Attendance.jsx"));
-const Timetable = lazy(()=>import("./admin/pages/Timetable.jsx"));
-const Reports = lazy(()=>import("./admin/pages/Reports.jsx"));
-const Assessment = lazy(()=>import("./admin/pages/Assessment.jsx"));
-const Messages = lazy(()=>import('./admin/pages/Messages.jsx'))
+// const ManageClassess = lazy(() => import("./admin/pages/Product.jsx")); //pending
+const SchoolSessions = lazy(()=>import("./admin/pages/SchoolSessions.jsx"))
+const Teachers = lazy(() => import("./admin/pages/Teachers.jsx"));
+const Student = lazy(() => import("./admin/pages/Student.jsx"));
+const Attendance = lazy(() => import("./admin/pages/Attendance.jsx"));
+const Timetable = lazy(() => import("./admin/pages/Timetable.jsx"));
+const Reports = lazy(() => import("./admin/pages/Reports.jsx"));
+const Assessment = lazy(() => import("./admin/pages/Assessment.jsx"));
+const Messages = lazy(() => import('./admin/pages/Messages.jsx'))
 const Settings = lazy(() => import("./admin/pages/Settings.jsx"));
 
 const Loading = () => (
@@ -50,15 +52,24 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/regschool" element={<RegisterSchool />} />
-
+          {/* <Route path="/regschool" element={<RegisterSchool />} /> */}
+          <Route
+            path="/regschool"
+            element={
+              <CheckUserBeforeSchoolReg>
+                <RegisterSchool />
+              </CheckUserBeforeSchoolReg>
+            }
+          />
+          
           {/* Dashboard with nested routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<DashboardHome />} />
               <Route path="admin_profile" element={<Admin />} />
               <Route path="school_profile" element={<School />} />
-              <Route path="classes" element={<ManageClassess />} />
+              <Route path="schoolSessions" element={<SchoolSessions/>}/>
+              {/* <Route path="classes" element={<ManageClassess />} /> */}
               <Route path="teachers" element={<Teachers />} />
               <Route path="student" element={<Student />} />
               <Route path="attendance" element={<Attendance />} />

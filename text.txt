@@ -31,3 +31,31 @@ Context provides user + school.
 Pages like Students, Teachers, Classes query the backend filtered by school_id.
 
 Example: GET /api/students?school_id={school.id}
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- CREATE TABLE schools (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   -- Auto-generate UUID for school
+--     name VARCHAR(255) UNIQUE,
+--     logo TEXT,
+--     email VARCHAR(255) UNIQUE NOT NULL,
+--     address VARCHAR(255),
+--     website VARCHAR(255) UNIQUE,
+--     user_id UUID NOT NULL,   -- Each school belongs to exactly one user
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+-- );
+
+ALTER TABLE schools
+ADD COLUMN contact varchar(255,

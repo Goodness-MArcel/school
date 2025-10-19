@@ -213,12 +213,17 @@
     opacity: 0;
     pointer-events: none;
   }
+ 
 
   .search-form.active input {
-    width: 160px;
+    width: 260px;
     opacity: 1;
     pointer-events: auto;
     margin-left: 8px;
+  }
+  .search-form {
+    position:absolute;
+    right: 150px;
   }
 
   .search-form .search-icon {

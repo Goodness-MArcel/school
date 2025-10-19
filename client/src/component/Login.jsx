@@ -4,6 +4,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/userService";
 import './login.css';
 import axios from "axios";
 function Login() {
@@ -48,9 +49,8 @@ function Login() {
             }
             console.log(data.user)
             if (data.user) {
-                const res = await axios.post('http://localhost:3000/api/login', {
-                    id: data.user.id
-                });
+                console.log(data.user.id)
+                const res = await loginUser(data.user.id);
                 const successs = res.data.message;
                 setSuccess(successs);
                 const profile = res.data;

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,8 +8,24 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { NavLink } from "react-router-dom";
 import './popover.css'
+import { getAdminProfile } from "../../api/userService";
 
 function AdminPopover({ user }) {
+  const [image , setImage] =useState('');
+
+  useEffect(()=>{
+    const loadProfile = async ()=>{
+      try {
+        const res = await getAdminProfile();
+        const profile = res.admin;
+        setImage(profile.image);
+        // console.log('ano', profile)
+      } catch (errr) {
+        console.log(errr)
+      }
+    }
+    loadProfile()
+  },[]);
   const popover = (
     <Popover id="popover-positioned-bottom">
       <Popover.Body>
@@ -36,7 +52,7 @@ function AdminPopover({ user }) {
   return (
     <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose>
       <img
-        src=""
+        src={image}
         alt="admin"
         className="admin_pic"
         style={{ cursor: "pointer" }}

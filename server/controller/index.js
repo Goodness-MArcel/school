@@ -1,75 +1,110 @@
-// import { use } from "react";
+
 import pool from "../db/dbconfig.js";
-import { supabase } from "../supabase.js";
+
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 //HANDLE USER SIGNUP.
 export const handleSignup = async (req, res) => {
   console.log("Incoming signup request:", req.body);
 
-  const { role, fullname, email, password, cpassword, id } = req.body;
-
   try {
-    //  Basic validation
+    const { id, fullname, email, password, cpassword, role } = req.body;
+
+    // ✅ Basic validation
     if (!id || !fullname || !email || !password || !cpassword) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "All fields are required" }] });
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required.",
+      });
     }
 
     if (password !== cpassword) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Passwords do not match" }] });
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match.",
+      });
     }
 
-    //  Check if email already exists
+    // ✅ Check if email already exists
     const existingUser = await pool.query(
       "SELECT id FROM users WHERE email = $1",
       [email]
     );
 
     if (existingUser.rows.length > 0) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Email already registered" }] });
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered.",
+      });
     }
 
-    //  Hash password securely
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // ✅ Prepare dynamic insert fields
+    const fields = ["id", "fullname", "email", "password"];
+    const values = [id, fullname, email];
+    let index = 4;
 
-    //  Insert into DB
+    // ✅ Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    values.push(hashedPassword);
+
+    // ✅ Optional role field
+    if (role) {
+      fields.push("role");
+      values.push(role);
+    }
+
+    // ✅ Add timestamps
+    fields.push("created_at", "updated_at");
+    values.push(new Date(), new Date());
+
+    // ✅ Build dynamic query
     const query = `
-      INSERT INTO users (id, fullname, email, password, role, created_at, updated_at)
-      VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-      RETURNING id, fullname, email, created_at
+      INSERT INTO users (${fields.join(", ")})
+      VALUES (${values.map((_, i) => `$${i + 1}`).join(", ")})
+      RETURNING id, fullname, email, role, created_at;
     `;
 
-    const values = [id, fullname, email, hashedPassword ,role];
-    const result = await pool.query(query, values);
+    const { rows } = await pool.query(query, values);
+    const user = rows[0];
 
-    const user = result.rows[0];
-    console.log("New user created:", user);
+    console.log("✅ New user created:", user);
 
     return res.status(201).json({
-      message: "User registered successfully",
-      user: { id: user.id, role, fullname: user.fullname, email: user.email },
+      success: true,
+      message: "User registered successfully.",
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at,
+      },
     });
   } catch (error) {
     console.error("Signup error:", error);
-    return res.status(500).json({ error: "Failed to save user data" });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to register user. Please try again.",
+    });
   }
 };
 
+
 //HANDLE SCHOOL REGISTRATION.
 export const handleSchoolRegistration = async (req, res) => {
+  // Accept either multipart/form-data with `logo` file, or JSON with `logo` filename/url
   const { name, address, email, website, logo, id } = req.body;
+
+  // If multer stored a file, construct its public URL
+  let logoUrl = logo;
+  if (req.file) {
+    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+    logoUrl = `${baseUrl}/uploads/${req.file.filename}`;
+  }
 
   try {
     // 1. Check for missing fields
-    if (!name || !address || !email || !website || !logo || !id) {
+    if (!name || !address || !email || !website || !logoUrl || !id) {
       return res
         .status(400)
         .json({ errors: [{ msg: "All fields are required" }] });
@@ -98,7 +133,7 @@ export const handleSchoolRegistration = async (req, res) => {
       VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
       RETURNING id, name, email, address, website, logo
     `;
-    const values = [schoolName, logo, schoolEmail, address, schoolWebsite, id];
+  const values = [schoolName, logoUrl, schoolEmail, address, schoolWebsite, id];
     const result = await pool.query(query, values);
 
     const school = result.rows[0];
@@ -146,82 +181,270 @@ export const handleLogin = async (req, res) => {
   }
 };
 
+//EDIT SCHOOL INFO
 
-// FOR CLASS SECTIONS ONLY!
-// export const showClassLogin = (req , res)=>{
-//   res.render('login.ejs');
-// }
+export const editSchoolInfo = async (req, res) => {
+  console.log("Request body:", req.body);
+  console.log("Uploaded file:", req.file);
 
-// export const classLogin = async(req, res)=>{
-//   console.log(req.body);
-//   const {email , password} = req.body;
-//   try {
-//     // FIND USER IN THE DB WITH EMAIL:
-//     let query = `select * from users where email = $1`;
-//     const value = [email];
-//     const result = await pool.query(query, value);
-//     const user =result.rows[0];
-//     // console.log(user)
-//     if(!user){
-//       console.log('no user found . please sign up')
-//       return ;
-//     }
+  try {
+    const { userId, name, website, contact, address, classes, accreditation } = req.body;
 
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     if(!isMatch){
-//       res.redirect(`/?error=${encodeURIComponent('incorrect user email or password')}`)
-//     }
-    
-//   } catch (error) {
-    
-//   }
-// }
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required field: userId",
+      });
+    }
+
+    // Build the update dynamically (partial update)
+    const fields = [];
+    const values = [];
+    let index = 2; // $1 will be userId
+
+    if (name) {
+      fields.push(`name = $${index++}`);
+      values.push(name);
+    }
+    if (website) {
+      fields.push(`website = $${index++}`);
+      values.push(website);
+    }
+    if (contact) {
+      fields.push(`contact = $${index++}`);
+      values.push(contact);
+    }
+    if (address) {
+      fields.push(`address = $${index++}`);
+      values.push(address);
+    }
+    if (classes) {
+      fields.push(`classes = $${index++}`);
+      values.push(classes);
+    }
+    if (accreditation) {
+      fields.push(`accreditation = $${index++}`);
+      values.push(accreditation);
+    }
+
+    // If a new file is uploaded
+    let imageUrl;
+    if (req.file) {
+      const url = process.env.BASE_URL;
+      imageUrl = `${url}/uploads/${req.file.filename}`;
+      fields.push(`logo = $${index++}`);
+      values.push(imageUrl);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update.",
+      });
+    }
+
+    // Construct query dynamically
+    const query = `
+      UPDATE schools
+      SET ${fields.join(", ")}
+      WHERE user_id = $1
+      RETURNING *;
+    `;
+
+    const { rows } = await pool.query(query, [userId, ...values]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "School not found.",
+      });
+    }
+
+    const updatedSchool = rows[0];
+
+    res.status(200).json({
+      success: true,
+      message: "School info updated successfully.",
+      schoolData: {
+        name: updatedSchool.name,
+        website: updatedSchool.website,
+        contact: updatedSchool.contact,
+        address: updatedSchool.address,
+        classes: updatedSchool.classes,
+        accreditation: updatedSchool.accreditation,
+        logo: updatedSchool.logo,
+      },
+    });
+  } catch (error) {
+    console.error("Error in editSchoolInfo:", error);
+
+    // Safely delete uploaded file if query failed
+    if (req.file) {
+      const fs = require("fs/promises");
+      await fs
+        .unlink(req.file.path)
+        .catch((err) => console.error("Failed to delete file:", err));
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update school profile.",
+    });
+  }
+};
+
+// GET SCHOOL PROFILE
+export const getSchoolProfile = async (req, res) => {
+  try {
+    const query = `SELECT * FROM schools`;
+    const result = await pool.query(query);
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching school info:", error);
+    res.status(500).json({ message: "Unable to get school info" });
+  }
+};
+
+
+export const getAdminProfile = async (req, res) => {
+  try {
+    // Defensive: ensure authentication middleware attached user
+    if (!req.user || !req.user.id) {
+      console.error('getAdminProfile: missing req.user');
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const userId = req.user.id; // from Supabase token
+    const query = `
+      SELECT id, fullname, role, email, contact, image
+      FROM users
+      WHERE id = $1
+    `;
+    const result = await pool.query(query, [userId]);
+
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Admin not found" });
+
+    res.status(200).json({ success: true, admin: result.rows[0] });
+  } catch (error) {
+    console.error("Error fetching admin profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 
 
- 
 
 
-// export const dashboard = async (req ,res)=>{
-//   // res.render('dashboard')
-//   try {
-//     const query = 'select * from users where id = $1';
-//     let result = await pool.query(query , [req.user.id]);
-//     console.log(result.rows[0]);
-//     let user = result.rows[0];
-//     if(result.rows.length === 0){
-//       console.log('no user found');
-//       return ;
-//     }
-//     res.render('dashboard', {user: user} )
-//   } catch (error) {
-    
-//   }
-// }
+export const editAdminProfile = async (req, res) => {
+  console.log("Request body:", req.body);
+  console.log("Uploaded file:", req.file);
 
-// export const SignUp = async (req, res) => {
-//   const { role, fullname, email, password } = req.body;
-//     console.log(req.body)
-//   try {
-//     // TODO: check if user exists in DB
-//     // Example (if using something like Prisma/Mongoose):
-//     // const existingUser = await User.findOne({ email });
-//     // if (existingUser) return res.status(400).json({ errors: [{ msg: "Email already registered" }] });
+  try {
+    const userId = req.user?.id; // from Supabase session middleware
+    const { fullName, role, password, email, contact } = req.body;
 
-//     // hash password
-//     const hashedPassword = await bcrypt.hash(password, 10);
+    // ✅ Validate user ID
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required field: userId.",
+      });
+    }
 
-//     // TODO: save user into DB
-//     // Example:
-//     // const newUser = new User({ role, fullname, email, password: hashedPassword });
-//     // await newUser.save();
+    // ✅ Prepare dynamic query parts
+    const fields = [];
+    const values = [];
+    let index = 1;
 
-//     return res.status(201).json({
-//       message: "User registered successfully",
-//       user: { role, fullname, email },
-//     });
-//   } catch (error) {
-//     console.error("Signup error:", error.message);
-//     res.status(500).json({ errors: [{ msg: "Server error" }] });
-//   }
-// };
+    if (fullName) {
+      fields.push(`fullname = $${index++}`);
+      values.push(fullName);
+    }
+
+    if (role) {
+      fields.push(`role = $${index++}`);
+      values.push(role);
+    }
+
+    if (email) {
+      fields.push(`email = $${index++}`);
+      values.push(email);
+    }
+
+    if (contact) {
+      fields.push(`contact = $${index++}`);
+      values.push(contact);
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      fields.push(`password = $${index++}`);
+      values.push(hashedPassword);
+    }
+
+    // ✅ Handle image upload
+    if (req.file) {
+      const baseUrl = process.env.BASE_URL || "";
+      const image = `${baseUrl}/uploads/${req.file.filename}`;
+      fields.push(`image = $${index++}`);
+      values.push(image);
+    }
+
+    // ✅ If no fields provided
+    if (fields.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update.",
+      });
+    }
+
+    // ✅ Build query dynamically
+    const query = `
+      UPDATE users
+      SET ${fields.join(", ")}
+      WHERE id = $${index}
+      RETURNING id, fullname, role, email, contact, image;
+    `;
+
+    const { rows } = await pool.query(query, [...values, userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found.",
+      });
+    }
+
+    const updatedAdmin = rows[0];
+
+    res.status(200).json({
+      success: true,
+      message: "Admin profile updated successfully.",
+      profile: {
+        id: updatedAdmin.id,
+        fullName: updatedAdmin.fullname,
+        role: updatedAdmin.role,
+        email: updatedAdmin.email,
+        contact: updatedAdmin.contact,
+        imageUrl: updatedAdmin.image,
+      },
+    });
+  } catch (error) {
+    console.error("Profile update error:", error);
+
+    // ✅ Gracefully clean up uploaded file if something failed
+    if (req.file) {
+      const fs = await import("fs/promises");
+      await fs
+        .unlink(req.file.path)
+        .catch((err) => console.error("Failed to delete uploaded file:", err));
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while updating profile. Please try again.",
+    });
+  }
+};
+

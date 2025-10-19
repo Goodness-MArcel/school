@@ -12,9 +12,7 @@ function DashboardHome() {
     <div className="row" >
       <div className="col-md-8 d-flex flex-column align-items-center justify-content-center gap-3" >
         <div className="cardsection p-1  w-100">
-          <div className="row g-3">
-            <TopCard />
-          </div>
+          <TopCard />
         </div>
         <div className="rounded" style={{ backgroundColor: 'white', width: '100%' }}>
           <MonthlyEarningsChart />
@@ -25,7 +23,6 @@ function DashboardHome() {
       </div>
       <div className="col-md-4">
         <SchoolCalender />
-
         <NoticeBoard />
         <Todo />
       </div>

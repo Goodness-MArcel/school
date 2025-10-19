@@ -1,0 +1,29 @@
+:root {
+  --primarycolor1: #c4aaff;
+  --primarycolor2: #8855ff;
+  --primarycolor3: #4d00ff;
+  --primarycolor4: #3c00c6;
+  --primarycolor5: #2a008c;
+  --bg1: #f7f8fc;
+  --bg2: #cdd0fa;
+  --bg3: #7f86f2;
+  --red: #fb3748;
+  --darkred: #d00416;
+  --green: #84ebb4;
+  --darkgreen: #1fc16b;
+}
+
+.form-control {
+  padding: 10px !important;
+}
+
+.edit-profilebtn,
+.save-change {
+  background-color: var(--primarycolor3) !important;
+  border: none !important;
+}
+
+.cancel-changes {
+  background-color: var(--darkred) !important;
+  border: none !important;
+}

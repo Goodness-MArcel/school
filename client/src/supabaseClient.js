@@ -1,6 +1,13 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// ✅ Keep session automatically and persist it in localStorage
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,      // ensures the user stays logged in on reload
+    autoRefreshToken: true,    // auto-refresh access tokens before they expire
+    detectSessionInUrl: true,  // handles OAuth redirects if you use them later
+  },
+});

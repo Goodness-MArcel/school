@@ -45,9 +45,20 @@ export const schoolValidation = [
 
   // logo: required, must be an image file (by extension)
   body("logo")
-    .notEmpty().withMessage("Logo is required")
-    .matches(/\.(jpg|jpeg|png|gif|webp)$/i)
-    .withMessage("Logo must be a valid image file (jpg, jpeg, png, gif, webp)"),
+    .custom((value, { req }) => {
+      // Accept either an uploaded file (multer -> req.file) or a text field containing filename
+      if (!req.file && (!value || value.trim() === "")) {
+        throw new Error("Logo is required");
+      }
+
+      // If file uploaded, validate extension from originalname
+      const checkName = req.file ? req.file.originalname : value;
+      if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(checkName || "")) {
+        throw new Error("Logo must be a valid image file (jpg, jpeg, png, gif, webp)");
+      }
+
+      return true;
+    }),
 
   // email: required, valid email
   body("email")

@@ -20,3 +20,19 @@
   padding: 16px;
   margin-bottom: 16px;
 }
+
+.todo-body {
+  margin-top: 15px;
+}
+
+button.btn-sm {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+}
+
+button.btn-sm .svg-inline--fa {
+  font-size: 0.9rem;
+  
+}

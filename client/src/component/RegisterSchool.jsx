@@ -60,11 +60,23 @@ function RegisterSchool() {
     }
     try {
       setLoading(true);
+      const formData = new FormData();
+      formData.append('id', user.id);
+      formData.append('name', schoolData.name);
+      formData.append('email', schoolData.email);
+      formData.append('address', schoolData.address);
+      formData.append('website', schoolData.website);
+      // append file if chosen
+      const fileInput = schoolLogo.current;
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        formData.append('logo', fileInput.files[0]);
+      }
+
       const response = await axios.post(
         "http://localhost:3000/api/registerSchool",
+        formData,
         {
-          id: user.id,
-          ...schoolData,
+          headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
       console.log("school registered successfully", response.data);
