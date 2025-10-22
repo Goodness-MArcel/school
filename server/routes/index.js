@@ -3,7 +3,7 @@ import { upload } from "../controller/uploadController.js";
 import { validation , validateRequest,schoolValidation } from "../middleware/Authmiddleware/index.js";
 import { verifySupabaseToken } from "../supabase.js";
 import { userChecker } from "../controller/checkUserExist.js";
-import { handleSignup, handleSchoolRegistration ,handleLogin ,editSchoolInfo,getSchoolProfile ,editAdminProfile, getAdminProfile} from "../controller/index.js";
+import { handleSignup, handleSchoolRegistration ,handleLogin ,editSchoolInfo,getSchoolProfile ,editAdminProfile, getAdminProfile,getSchoolSessionData} from "../controller/index.js";
 const router = express.Router();
 // ===============================
 // School Management Routes
@@ -30,6 +30,9 @@ router.put('/updateSchool', upload.single("logo"), editSchoolInfo);
 
 // Retrieve school profile details
 router.get('/getSchool/info', getSchoolProfile);
+
+// Retrieve school session data
+router.get('/school-sessions', getSchoolSessionData);
 
 // ===============================
 // Admin Management (Protected Routes)

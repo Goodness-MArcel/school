@@ -7,7 +7,7 @@ const AlertModal = ({ show, onHide, title, message, variant }) => {
   const getHeaderStyle = () => {
     switch (variant) {
       case "success":
-        return { backgroundColor: "#1fc16b", color: "white" }; // custom dark green
+        return { backgroundColor: "#8855ff", color: "white" }; // custom dark green
       case "danger":
         return { backgroundColor: "#d00416", color: "white" }; // Bootstrap red
       case "warning":
@@ -24,7 +24,7 @@ const AlertModal = ({ show, onHide, title, message, variant }) => {
       </Modal.Header>
       <Modal.Body>{message}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="danger" onClick={onHide}>
           Close
         </Button>
       </Modal.Footer>

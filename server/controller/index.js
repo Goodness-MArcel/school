@@ -448,3 +448,23 @@ export const editAdminProfile = async (req, res) => {
   }
 };
 
+
+
+ export const getSchoolSessionData = async (req, res) => {
+  try {
+    // Query to fetch all school sessions
+    const query = 'SELECT * FROM school_sessions';
+    const result = await pool.query(query);
+
+    // Check if data exists
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No school sessions found' });
+    }
+
+    // Send the fetched data as a response
+    return res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching school sessions:', error);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};

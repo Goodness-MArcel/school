@@ -1,0 +1,85 @@
+.search_school_part {
+  background-color: white !important;
+}
+
+.form-select,
+.form-control {
+  background-color: #f7f8fc;
+  padding: 10px;
+}
+
+::placeholder {
+  font-size: 13px;
+}
+
+/* Filter button styling */
+.filter-btn {
+  border: 1px solid #3c00c6; /* Thin and consistent */
+}
+
+.filter-btn:hover {
+  background-color: #3c00c6;
+  color: white;
+}
+
+/* Buttons for session and creation */
+.save-session,
+.create-new:hover {
+  background-color: #4d00ff !important;
+}
+
+/* Section background */
+.allsection {
+  background-color: white !important;
+}
+
+/* Table styling */
+.allsection table {
+
+  border-radius: 8px !important; /* Rounded corners */
+  border-collapse: collapse; /* Collapse borders for clean look */
+  width: 100%;
+  font-size: 12px;
+ 
+  /* text-align: center; */
+}
+
+/* Uniform thin borders for all cells */
+.allsection table th,
+.allsection table td {
+  border: 2px solid #cdd0fa; /* Thin border for cells */
+  padding: 10px;
+}
+
+/* Status badge styling */
+.status-badge span {
+    padding: 4px 4px;
+    border-radius: 8px;
+    /* font-weight: 50; */
+   
+}
+
+.status-active span{
+  background-color: #1fc16b !important; /* Green for active */
+  color: white;
+}
+
+.status-pending span{
+  background-color: #ffc107 !important; /* Yellow for pending */
+  color: black;
+}
+
+.status-completed span{
+  background-color:red; /* Gray for completed */
+  color: white;
+}
+
+.status-upcoming span{
+  background-color: #8855ff !important; /* Cyan for upcoming */
+  color: white;
+}
+
+.status-default {
+  background-color: #dc3545; /* Red for default/unexpected */
+  color: white;
+}

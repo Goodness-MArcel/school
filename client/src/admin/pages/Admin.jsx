@@ -328,10 +328,10 @@ function Admin() {
 
                 {isEditing && (
                   <div className="text-end mt-3">
-                    <button type="submit" className="btn btn-success me-2" disabled={loading}>
+                    <button type="submit" className="btn text-light me-2" disabled={loading} style={{backgroundColor: '#8855ff'}}>
                       {loading ? "Saving..." : "Save Changes"}
                     </button>
-                    <button type="button" className="btn btn-secondary" onClick={handleCancelClick}>
+                    <button type="button" className="btn btn-danger" onClick={handleCancelClick}>
                       Cancel
                     </button>
                   </div>

@@ -42,7 +42,7 @@ Example: GET /api/students?school_id={school.id}
 
 
 
-
+SCHOOL TABLE SCHEMA
 
 -- CREATE TABLE schools (
 --     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   -- Auto-generate UUID for school
@@ -57,5 +57,24 @@ Example: GET /api/students?school_id={school.id}
 --     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 -- );
 
-ALTER TABLE schools
-ADD COLUMN contact varchar(255,
+  SCHOOL SESSION SCHEMA
+
+CREATE TABLE school_sessions (
+  session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),       -- unique ID for each session
+  session_name VARCHAR(100) NOT NULL,                          -- e.g., "2024 / 2025 Academic Year"
+  term VARCHAR(20) NOT NULL CHECK (term IN ('first', 'second', 'third')),  -- restricted term options
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  status VARCHAR(20) DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'active', 'completed')),  -- session state
+  created_by UUID NOT NULL,                                    -- user/admin who created the session
+  school_id UUID NOT NULL,                                     -- link to the school
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,              -- creation timestamp
+  
+  CONSTRAINT fk_school FOREIGN KEY (school_id)
+    REFERENCES schools(id) ON DELETE CASCADE,
+
+  CONSTRAINT fk_created_by FOREIGN KEY (created_by)
+    REFERENCES users(id) ON DELETE SET NULL,
+
+  CONSTRAINT session_unique UNIQUE (school_id, session_name, term)  -- prevent duplicates
+);

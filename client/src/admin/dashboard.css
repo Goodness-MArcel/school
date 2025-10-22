@@ -119,7 +119,7 @@
 
 /* Logo */
 .logo_img {
-  border: thin solid white;
+  /* border: thin solid white; */
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -238,7 +238,6 @@
   width: 30px;
   border-radius: 50%;
   object-fit: cover;
-  border: thin solid var(--primarycolor3);
   cursor: pointer;
   transition: background 0.3s ease;
 }
